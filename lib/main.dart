@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data/proverb_data.dart';
+import 'package:flutter_application_1/model/proverb.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +30,9 @@ class SearchProverb extends StatefulWidget {
 }
 
 class _SearchProverbState extends State<SearchProverb> {
+
+  List<Proverb> proverbs = allProverb;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +72,18 @@ class _SearchProverbState extends State<SearchProverb> {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: ListView.builder(
-                  itemCount: 20,
+                  itemCount: proverbs.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          // color: Colors.indigo.shade100,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text('ListItem $index'),
+                    return ListTile(
+                      title: Text(
+                        proverbs[index].name,
+                        style: TextStyle(
+                          fontSize: 12.1,
+                        ),
+                        
+                      ),
                     );
                   }),
             ),
