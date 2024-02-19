@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/proverb_data.dart';
-import 'package:flutter_application_1/model/proverb.dart';
-
+// import 'package:flutter_application_1/model/proverb.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,13 +29,33 @@ class SearchProverb extends StatefulWidget {
 }
 
 class _SearchProverbState extends State<SearchProverb> {
-
-  List<Proverb> proverbs = allProverb;
+  List<Map<String, dynamic>> foundProverb = [];
+  @override
+  void initState() {
+   foundProverb = allProverbs;
+    super.initState();
+  }
   
+  void filterProverb(String keywords) {
+    List<Map<String, dynamic>> searchResults = [];
+    if (keywords.isEmpty) {
+      searchResults = allProverbs;
+    } else {
+      searchResults = allProverbs
+          .where((allProverbs) =>
+              allProverbs["name"].toLowerCase().contains(keywords.toLowerCase()))
+          .toList();
+    }
+  
+    setState(() {
+      foundProverb = searchResults;
+    });
+   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 92, 112, 146),
+      backgroundColor: Color.fromARGB(255, 212, 220, 233),
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         title: Text(
@@ -51,20 +70,15 @@ class _SearchProverbState extends State<SearchProverb> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            height: 10.0,
+            height: 15.0,
           ),
           TextField(
+           onChanged: (value) => filterProverb(value),
             style: TextStyle(
               fontSize: 13.1,
-              color: Color.fromARGB(255, 34, 36, 36),
+              color: Color.fromARGB(255, 13, 14, 14),
             ),
             decoration: InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(255, 214, 220, 224),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(9),
-                borderSide: BorderSide.none,
-              ),
               hintText: "Search...",
               prefixIcon: Icon(Icons.search),
               prefixIconColor: Color.fromARGB(255, 21, 83, 112),
@@ -74,15 +88,18 @@ class _SearchProverbState extends State<SearchProverb> {
             child: Padding(
               padding: EdgeInsets.all(10),
               child: ListView.builder(
-                  itemCount: proverbs.length,
+                  itemCount: foundProverb.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      contentPadding: EdgeInsets.all(2),
+                      // leading: Text(
+                      //   foundProverb[index]["id"].toString(),
+                      // ),
                       title: Text(
-                        proverbs[index].name,
+                        foundProverb[index]["name"],
                         style: TextStyle(
                           fontSize: 12.1,
                         ),
-                        
                       ),
                     );
                   }),
