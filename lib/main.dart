@@ -32,31 +32,39 @@ class _SearchProverbState extends State<SearchProverb> {
   List<Map<String, dynamic>> foundProverb = [];
   @override
   void initState() {
-   foundProverb = allProverbs;
+    foundProverb = allProverbs;
     super.initState();
   }
-  
+
   void filterProverb(String keywords) {
     List<Map<String, dynamic>> searchResults = [];
     if (keywords.isEmpty) {
       searchResults = allProverbs;
     } else {
       searchResults = allProverbs
-          .where((allProverbs) =>
-              allProverbs["name"].toLowerCase().contains(keywords.toLowerCase()))
+          .where((allProverbs) => allProverbs["name"]
+              .toLowerCase()
+              .contains(keywords.toLowerCase()))
           .toList();
     }
-  
+
     setState(() {
       foundProverb = searchResults;
     });
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 212, 220, 233),
       appBar: AppBar(
+        // leading: Icon(Icons.double_arrow_sharp),
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.search),
+        //     onPressed: () {},
+        //   ),
+        // ],
         backgroundColor: Colors.blueGrey,
         title: Text(
           "Burmese Proverb",
@@ -65,6 +73,11 @@ class _SearchProverbState extends State<SearchProverb> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        )),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -73,7 +86,7 @@ class _SearchProverbState extends State<SearchProverb> {
             height: 15.0,
           ),
           TextField(
-           onChanged: (value) => filterProverb(value),
+            onChanged: (value) => filterProverb(value),
             style: TextStyle(
               fontSize: 13.1,
               color: Color.fromARGB(255, 13, 14, 14),
@@ -86,19 +99,19 @@ class _SearchProverbState extends State<SearchProverb> {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.only(top: 2, left: 8, right: 8),
               child: ListView.builder(
                   itemCount: foundProverb.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      contentPadding: EdgeInsets.all(2),
-                      // leading: Text(
-                      //   foundProverb[index]["id"].toString(),
-                      // ),
-                      title: Text(
-                        foundProverb[index]["name"],
-                        style: TextStyle(
-                          fontSize: 12.1,
+                    return Card(
+                      elevation: 5,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        title: Text(
+                          foundProverb[index]["name"],
+                          style: TextStyle(
+                            fontSize: 12.1,
+                          ),
                         ),
                       ),
                     );
